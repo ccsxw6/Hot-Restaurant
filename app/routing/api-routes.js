@@ -1,0 +1,2 @@
+// can technically put both in same place, but we like to divide code to help organize better
+//api routes are for our data -- going to help determine what data the user sees as well as what data the user is able to post to our server to store 
