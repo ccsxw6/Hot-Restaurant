@@ -25,6 +25,7 @@ module.exports = function (app) {
         }
     })
 
+    //when we post to api clear, empty out all arrays - next, write our matching ajax for the tables.html
     app.post('/api/clear', function() {
         tableDate = [];
         waitListData = [];

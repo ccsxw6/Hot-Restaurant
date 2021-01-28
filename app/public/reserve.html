@@ -5,9 +5,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!--font-awesome allows you to get the icons with the buttons from bootstrap-->
     <title>Reservations Page</title>
 </head>
@@ -22,10 +23,8 @@
         <br>
 
         <div class="text-center">
-            <a href="/tables"><button class="btn btn-lg btn-primary"><span class="fa fa-list-alt"></span> View
-                    Tables</button></a>
-            <a href="/"><button class="btn btn-lg btn-primary"><span class="fa fa-home"
-                        aria-hidden="true"></span></button></a>
+            <a href="./tables.html"><button class="btn btn-lg btn-primary"><span class="fa fa-list-alt"></span> View Tables</button></a>
+            <a href="./home.html"><button class="btn btn-lg btn-primary"><span class="fa fa-home"></span></button></a>
         </div>
         <br>
 
@@ -72,9 +71,11 @@
             </div>
         </footer>
     </div>
+
     <script type="text/javascript">
+    $(document).ready(function () {
         $(".submit").on("click", function(){
-            //when submit button is clicked, create an obj caled newReservation and I want you to pull all the values from those input fields IDs
+            //when submit button is clicked, create an obj caled newReservation and pull all the values from those input fields IDs and assign them to a key
             var newReservation = {
                 costumerName: $('#reserve_name').val().trim(),
                 phoneNumber: $('#reserve_phone').val().trim(),
@@ -82,9 +83,17 @@
                 customerId: $('#reserver_uniqueID').val().trim(),
             };
             console.log(newReservation)
-            return false
-            // created an object based on what the user has entered into  the reservation fields, next, I need to post this to my API using ajax and that post route I built in the api route
+            return false //why false here??
+            
+            // created an object based on what the user has entered into  the reservation fields, next, 
+            // I need to post this to my API using ajax and that post route I built in the api route
 
+
+            // I want you to set the window location origin to the variable currentURL - this basically pulls the 
+            // origin url of where the user is right now. So, if you notice current URL whenever we console logged it 
+            // we added the extension api tables so the actual origin is just localhost 8080. We pull the user's origin 
+            // instead of hard-coding an acutal location so that we can deploy to Heroku or wherever w/out having to 
+            // actually change our code 
             var currentURL = window.location.origin;
 
             $.post(currentURL + "/api/tables", newReservation, function(data) {
@@ -101,17 +110,17 @@
             })
             return false
             // to explain this, go back to the api route that we built bf look at app.post
-            // when the app tries to post to this url, I want you to run this function, has a req and a res, going to mark that res as true or false based on what array we push the info into
-            //back to reserve.html, $.post, what we've said here is our ajax post to that url and pass in newreservation as the request and this function as the response, the server is going to receive the request from the user and resopnd by running that API route array push then the data will come back the res json as either true or false so we can trigger an alert to the user to let them nknow what's going on
+            // when the app tries to post to this url, I want you to run this function, has a req and a res,
+            //  going to mark that res as true or false based on what array we push the info into
+            //back to reserve.html, $.post, what we've said here is our ajax post to that url and pass in 
+            // newreservation as the request and this function as the response, the server is going to receive the 
+            // request from the user and resopnd by running that API route array push then the data will come back the
+            //  res json as either true or false so we can trigger an alert to the user to let them nknow what's going on
             // last we want to clear out all the fields in the form after the user submits 
         })
+    })
     </script>
 
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
-        crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </body>
 
 </html>
