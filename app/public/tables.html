@@ -53,9 +53,81 @@
             </div>
           </footer>
       </div>
+    </body>
 
+    <!--now we just want to displaly this information to our users on the tables page, starting an AJAX call which grabs the data from the API route and it's going to allow me to display that data on my html page-->
+    <script type="text/javascript">
+    // whenever I run function runTableQuery, I want you to set the window location origin to the variable currentURL - this basically pulls the origin url of where the user is right now. So, if you notice current URL whenever we console logged it we added the extension api tables so the actual origin is just localhost 8080. We pull the user's origin instead of hard-coding an acutal location so that we can deploy to Heroku or wherever w/out having to actually change our code 
+      function runTableQuery() {
+        var currentURL = window.location.origin;
 
+        $.ajax({url: currentURL +"/api/tables", method: "GET"})
+        .done(function(tableData){
+          console.log("--------------------------------")
+          console.log("URL" + currentURL + "/api/tables")
+          console.log("--------------------------------")
+          console.log(tableData)
+          console.log("--------------------------------")
+          //now we just have to traverse through this data and use jquery to display the data in html back to the user
+          for (var i=o; i<tableData.length; i) {
+            console.log(tableData[i]) //since it's an array, we're able to uwse a for loop to go through each obj and pick out no matter how many tables we end up getting , so next, what we need to do is remember what exactly we want to display to the user. We wanted to display the table number and the user name
+            var tableSection = $("<div>");
+            tableSection.addclass('well');
+            tableSection.attr('id', "tableWell-" + i+1)
+            $("tableSection").append(tableSection)
 
+            var tableNumber = i + 1;
+
+            $("#tableWell-" + i+1).append('<h2><span class="label label-primary">' + tableNumber + "</span> | " + tableData[i].customerID + "</h2>");
+            //for each obj in this array, we are going to create a div to hold the info add some classes and ids to it based on what number in the array were in and then I want to append this div to the page then create a table number by adding one to the index of this zero indexed array so that the first obj is tableone and so on and thei want to display that table number and the customer id ass. with the current pos we're on in the array. DO basicall same thing for waiting list. 
+          }
+        })
+      }
+
+      function runWaitListQuery() {
+        var currentURL = window.location.origin;
+
+        $.ajax({url: currentURL +"/api/waitlist", method: "GET"})
+        .done(function(waitlistData){
+          console.log("--------------------------------")
+          console.log("URL" + currentURL + "/api/waitlist")
+          console.log("--------------------------------")
+          console.log(waitlistData)
+          console.log("--------------------------------")
+          //now we just have to traverse through this data and use jquery to display the data in html back to the user
+          for (var i=o; i<waitlistData.length; i) {
+            console.log(waitlistData[i]) //since it's an array, we're able to uwse a for loop to go through each obj and pick out no matter how many tables we end up getting , so next, what we need to do is remember what exactly we want to display to the user. We wanted to display the table number and the user name
+            var waitlistSection = $("<div>");
+            waitlistSection.addclass('well');
+            waitlistSection.attr('id', "waitlistWell-" + i+1)
+            $("waitlistSection").append(waitlistSection)
+
+            var tableNumber = i + 1;
+
+            $("#waitlistWell-" + i+1).append('<h2><span class="label label-primary">' + tableNumber + "</span> | " + waitlistData[i].customerID + "</h2>");
+            //for each obj in this array, we are going to create a div to hold the info add some classes and ids to it based on what number in the array were in and then I want to append this div to the page then create a table number by adding one to the index of this zero indexed array so that the first obj is tableone and so on and thei want to display that table number and the customer id ass. with the current pos we're on in the array. DO basicall same thing for waiting list. 
+          }
+        })
+      }
+
+      function clearTable() {
+        var currentURl = window.location.origin; 
+        $.ajax({url: currentURL + "/api/clear", method: "POST"})
+        // now we need to trigger the api endpoint when the user clicks on the clear table button 
+      }
+
+      // when user clicks clear button, tell user clear it and refresh page so they can see data has been cleared
+      $("#clear").on('click', function() {
+        alert("Clearing...");
+        clearTable();
+        location.reload;
+      })
+
+      clearTable()
+      runTableQuery()
+      runWaitListQuery()
+
+      //now we need to give the user the ability to post to our API and create a new table reservation. Going to start on our APIroutes file and build a post route
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
-</body>
 </html>

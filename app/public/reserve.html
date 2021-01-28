@@ -66,22 +66,52 @@
             </div>
         </div>
 
-
-
-
-
         <footer class="footer">
             <div class="container">
                 <p><a href="/api/tables">API Table Link</a> | <a href="/api/waitlist">API Wait List</a>
             </div>
         </footer>
     </div>
+    <script type="text/javascript">
+        $(".submit").on("click", function(){
+            //when submit button is clicked, create an obj caled newReservation and I want you to pull all the values from those input fields IDs
+            var newReservation = {
+                costumerName: $('#reserve_name').val().trim(),
+                phoneNumber: $('#reserve_phone').val().trim(),
+                customerEmail: $('#reserve_email').val().trim(),
+                customerId: $('#reserver_uniqueID').val().trim(),
+            };
+            console.log(newReservation)
+            return false
+            // created an object based on what the user has entered into  the reservation fields, next, I need to post this to my API using ajax and that post route I built in the api route
 
+            var currentURL = window.location.origin;
+
+            $.post(currentURL + "/api/tables", newReservation, function(data) {
+                if (data=true) {
+                    alert("Yay! You are officially booked!")
+                }
+                if (data=false) {
+                    alert("Sorry you are on the wait list")
+                }
+                $('#reserve_name').val("")
+                $('#reserve_phone').val("")
+                $('#reserve_email').val("")
+                $('#reserver_uniqueID').val("")
+            })
+            return false
+            // to explain this, go back to the api route that we built bf look at app.post
+            // when the app tries to post to this url, I want you to run this function, has a req and a res, going to mark that res as true or false based on what array we push the info into
+            //back to reserve.html, $.post, what we've said here is our ajax post to that url and pass in newreservation as the request and this function as the response, the server is going to receive the request from the user and resopnd by running that API route array push then the data will come back the res json as either true or false so we can trigger an alert to the user to let them nknow what's going on
+            // last we want to clear out all the fields in the form after the user submits 
+        })
+    </script>
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
         crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </body>
 
 </html>
